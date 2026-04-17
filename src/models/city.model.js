@@ -6,10 +6,10 @@ const citySchema = new Schema({
         lowercase:true,
         required:true
     },
-    theater:{
+    theater:[{
         type:mongoose.Types.ObjectId,
         ref:"Theater"
-    }
+    }]
 },{timestamps:true})
 
 const City = mongoose.model("City",citySchema)

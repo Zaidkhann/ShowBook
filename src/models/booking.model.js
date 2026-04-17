@@ -5,23 +5,20 @@ const bookingSchema = new Schema({
         type:mongoose.Types.ObjectId,
         ref:"User"
     },
-    movie:{
-        type:mongoose.Types.ObjectId,
-        ref:"Movie"
-    },
-    theater:{
-        type:mongoose.Types.ObjectId,
-        ref:"Theater"
-    },
-    OnDate:{
+    show: {
+    type: mongoose.Types.ObjectId,
+    ref: "Show"
+},
+    date:{
         type:String
     },
     time:{
         type:String
     },
     price:{
-        type:mongoose.Types.ObjectId,
-        ref:"Seat"
+        type:Number,
+        required:true,
+        default:null
     },
     seat:{
         type:mongoose.Types.ObjectId,
@@ -30,3 +27,7 @@ const bookingSchema = new Schema({
 },{
     timestamps:true
 })
+
+const Booking = mongoose.model("Booking",bookingSchema)
+
+export default Booking

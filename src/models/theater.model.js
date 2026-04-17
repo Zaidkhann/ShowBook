@@ -14,15 +14,15 @@ const theaterSchema = new Schema({
         trim:true,
         lowercase:true
     },
-    movie:{
+    movie:[{
         type: mongoose.Types.ObjectId,
         ref:"Movie"
 
-    },
-    seats:{
+    }],
+    seats:[{
         type:mongoose.Types.ObjectId,
         ref:"Seat"
-    }
+    }]
 },{
     timestamps:true
 })
