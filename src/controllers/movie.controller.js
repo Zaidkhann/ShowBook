@@ -50,3 +50,4 @@ export const getAllMovie = async(req,res) =>{
         })
     }
 }
+ 

@@ -24,7 +24,7 @@ export const registerUser = async (req,res)=>{
                 location
             }
         )
-        const token = user.generateJWT()
+        const token = await user.generateJWT()
         res.cookie("token", token, {
             httpOnly: true,
             secure: false,
@@ -71,7 +71,7 @@ export const loginUser = async (req,res)=>{
                 message: "Invalid email or password"
             });
     }
-    const token = user.generateJWT();
+    const token = await user.generateJWT();
     res.cookie("token", token, {
             httpOnly: true,
             secure: false,
