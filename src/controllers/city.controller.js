@@ -23,3 +23,17 @@ export const postCity = async(req,res)=>{
         })
     }
 }
+
+export const getAllCity = async(req,res)=>{
+    try{
+        const cities = await City.find({})
+        res.status(200).json({
+            "Found": `${cities.length} founded!`,
+            cities:cities
+        })
+    }
+    catch(err){
+        res.status(404).json({"message":`No Cities found ${err.message}`})
+    }
+
+}
