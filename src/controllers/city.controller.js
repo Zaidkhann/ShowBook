@@ -1,16 +1,21 @@
 import City  from "../models/city.model.js";
+import Theater from "../models/theater.model.js";
 
 export const postCity = async(req,res)=>{
     try{
-        const {cityName,theaters} = req.body
-        if(!cityName||!theaters){
+        const {cityName} = req.body
+        if(!cityName){
             return res.status(400).json({
-            "message":"All Fields are must required"
+            "message":"cityName is required"
         })
         }
+        
+        const existingTheaters = await Theater.find({ location: cityName.toLowerCase() });
+        const theaterIds = existingTheaters.map(t => t._id);
+
         const city = await City.create({
             cityName,
-            theaters
+            theaters: theaterIds
         })
         res.status(201).json({
             "message" : "city field is created successfully",
@@ -26,7 +31,7 @@ export const postCity = async(req,res)=>{
 
 export const getAllCity = async(req,res)=>{
     try{
-        const cities = await City.find({})
+        const cities = await City.find({}).populate("theaters")
         res.status(200).json({
             "Found": `${cities.length} founded!`,
             cities:cities

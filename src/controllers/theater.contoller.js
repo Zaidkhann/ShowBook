@@ -1,5 +1,6 @@
 import Theater from "../models/theater.model.js"
 import User from "../models/user.model.js"
+import City from "../models/city.model.js"
 
 export const postTheater = async (req, res) => {
     try {
@@ -15,6 +16,15 @@ export const postTheater = async (req, res) => {
             seats,
             location
         })
+
+        const city = await City.findOne({ cityName: location.toLowerCase() });
+        if (city) {
+            if (!city.theaters.includes(theater._id)) {
+                city.theaters.push(theater._id);
+                await city.save();
+            }
+        }
+
         res.status(201).json({
             "message": "Succesfully field created theater",
             theater

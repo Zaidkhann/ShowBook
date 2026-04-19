@@ -4,7 +4,8 @@ const citySchema = new Schema({
     cityName:{
         type:String,
         lowercase:true,
-        required:true
+        required:true,
+        unique:[true,"City exist already"]
     },
     theaters:[{
         type:mongoose.Types.ObjectId,
