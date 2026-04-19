@@ -21,7 +21,8 @@ export const registerUser = async (req,res)=>{
                 username,
                 email,
                 password,
-                location
+                location,
+                role
             }
         )
         const token = await user.generateJWT()
@@ -36,7 +37,8 @@ export const registerUser = async (req,res)=>{
                 id:user._id,
                 username: user.username,
                 email: user.email,
-                location:user.location
+                location:user.location,
+                role:user.role
 
             }
         })
@@ -83,7 +85,8 @@ export const loginUser = async (req,res)=>{
                 id:user._id,
                 username: user.username,
                 email: user.email,
-                location:user.location
+                location:user.location,
+                role:user.role
             },
         message:"Login successfully",
 

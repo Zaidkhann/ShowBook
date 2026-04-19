@@ -9,21 +9,11 @@ const bookingSchema = new Schema({
     type: mongoose.Types.ObjectId,
     ref: "Show"
 },
-    date:{
-        type:String
-    },
-    time:{
-        type:String
-    },
-    price:{
-        type:Number,
-        required:true,
-        default:null
-    },
-    seat:{
+    
+    seat:[{
         type:mongoose.Types.ObjectId,
         ref:"Seat"
-    }
+    }]
 },{
     timestamps:true
 })

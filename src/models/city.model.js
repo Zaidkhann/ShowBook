@@ -6,7 +6,7 @@ const citySchema = new Schema({
         lowercase:true,
         required:true
     },
-    theater:[{
+    theaters:[{
         type:mongoose.Types.ObjectId,
         ref:"Theater"
     }]

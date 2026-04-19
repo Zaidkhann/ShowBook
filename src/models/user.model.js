@@ -3,7 +3,6 @@ import dotenv from "dotenv"
 dotenv.config()
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken"
-import app from "../app.js"
 const userSchema = new Schema({
     username: {
         type: String,
