@@ -45,6 +45,7 @@ passport.use(
             email.split("@")[0],
 
           email,
+          image: profile.photos?.[0]?.value,
 
           googleId: profile.id,
 

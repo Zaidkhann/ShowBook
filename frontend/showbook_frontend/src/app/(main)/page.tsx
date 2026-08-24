@@ -1,4 +1,4 @@
-import HeroCarousel from "../components/HeroCarousel";
+import HeroCarousel from "@/components/HeroCarousel";
 
 const slides = [
   { id: 1, image: "/banners/banner1.png", alt: "Insidious - Out of the Further" },
@@ -11,7 +11,7 @@ export default function Home() {
   return (
     <main className="w-full self-stretch">
       <div className="px-4 py-4">
-        <HeroCarousel slides={slides} autoPlayInterval={4000} />
+        <HeroCarousel slides={slides} autoPlayInterval={3000} />
       </div>
     </main>
   );

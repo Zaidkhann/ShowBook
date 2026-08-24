@@ -3,6 +3,7 @@ import Link from "next/link";
 import { Search } from "lucide-react";
 import {getSession} from "../lib/auth.js"
 import {LoginButton} from "../components/LoginButton.jsx"
+import { DropdownMenuIcons } from "../components/ProfileDropDown.jsx"
 async function Navbar() {
   
  
@@ -36,12 +37,15 @@ async function Navbar() {
 
       {/* Location */}
       <div className="ml-auto px-8 text-white">
-        User Location
+        {user ? user.location : 'Choose location'}
       </div>
 
       {/* Profile */}
+      
       <div className="px-8 text-white">
-        {user ? user.username : <LoginButton/> }
+        {user ?(
+          <DropdownMenuIcons image={user.image}/>
+          ):(<LoginButton/>) }
       </div>
 
     </div>

@@ -4,19 +4,7 @@ import { useState, useEffect, useCallback, useRef } from "react";
 import Image from "next/image";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 
-/**
- * HeroCarousel — BookMyShow-style sliding banner
- *
- * Usage:
- * <HeroCarousel
- *   slides={[
- *     { id: 1, image: "/banners/insidious.jpg", alt: "Insidious - Out of the Further" },
- *     { id: 2, image: "/banners/cred-offer.jpg", alt: "CRED Cashback Offer" },
- *     { id: 3, image: "/banners/another.jpg", alt: "Another Promo" },
- *   ]}
- *   autoPlayInterval={4000}
- * />
- */
+
 export default function HeroCarousel({ slides = [], autoPlayInterval = 4000 }) {
   const [current, setCurrent] = useState(0);
   const [isHovering, setIsHovering] = useState(false);

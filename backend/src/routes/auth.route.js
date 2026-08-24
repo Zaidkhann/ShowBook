@@ -1,4 +1,4 @@
-import app from "../app.js"
+import passport from "../config/google.strategy.js";
 import express from "express"
 import {googleCallback } from "../controllers/google-auth.controller.js"
 

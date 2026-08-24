@@ -23,7 +23,7 @@ export default function LoginPage() {
           </div>
         </div>
       </div>
-      <div className="relative hidden bg- lg:block">
+      <div className="relative hidden lg:block">
         <img
           src="/logo-dark.png"
           alt="Image"

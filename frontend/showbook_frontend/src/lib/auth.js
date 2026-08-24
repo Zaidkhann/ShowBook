@@ -3,8 +3,6 @@ import { cookies } from "next/headers"
 export const getSession = async () => {
   const cookieStore = await cookies()
 
-  console.log("COOKIES:", cookieStore.toString())
-
   const res = await fetch("http://localhost:5000/api/auth/me", {
     headers: {
       Cookie: cookieStore.toString(),

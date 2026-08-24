@@ -34,6 +34,9 @@ const userSchema = new Schema({
       unique: true,
       sparse: true,
     },
+    image: {
+    type: String,
+    },
     role: {
         type: String,
         enum: ["user", "admin"],
