@@ -21,11 +21,12 @@ app.use(cookieParser())
 app.use(passport.initialize());
 app.use("/api/auth",authRoute)
 app.use("/api/movie",movieRoute)
-app.use("/api/theater",theaterRoute)
+app.use("/api/theatre",theaterRoute)
 app.use("/api/seat",seatRoute)
 app.use("/api/city",cityRoute)
 app.use("/api/show",showRoute)
 app.use("/api/booking",bookingRoute)
 app.use("/api/user",updateProfileRoute)
+
 
 export default app

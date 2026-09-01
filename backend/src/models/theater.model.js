@@ -1,7 +1,7 @@
 import mongoose,{Schema} from "mongoose";
 
 const theaterSchema = new Schema({
-    theaterName : {
+    theatreName : {
         type: String,
         required:true,
         trim:true,
@@ -22,7 +22,15 @@ const theaterSchema = new Schema({
     seats:[{
         type:mongoose.Types.ObjectId,
         ref:"Seat"
-    }]
+    }],
+    rows:{
+        type:Number,
+        required:true
+    },
+    columns:{
+        type:Number,
+        required:true
+    }
 },{
     timestamps:true
 })

@@ -19,6 +19,10 @@ const movieSchema = new Schema({
     duration:{
         type:String,
     },
+    coverImage:{
+        type:String,
+        required:true
+    },
     rating:{
         type:Number,
         default:3

@@ -11,18 +11,10 @@ const showSchema = new Schema({
         ref: "Theater",
         required: true
     }],
-    date: {
-        type: String,
-        required: true
-    },
-    time: {
-        type: String,
-        required: true
-    },
-    price: {
-        type: Number,
-        required: true
-    }
+    showAt: {
+    type: Date,
+    required: true
+  }
 }, { timestamps: true });
 
 const Show = mongoose.model("Show", showSchema);

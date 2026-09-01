@@ -13,6 +13,7 @@ export default function Home() {
       <div className="px-4 py-4">
         <HeroCarousel slides={slides} autoPlayInterval={3000} />
       </div>
+   
     </main>
   );
 }

@@ -4,6 +4,53 @@
 
 @custom-variant dark (&:is(.dark *));
 
+/* Override react-country-state-city dropdown theme */
+.stdropdown-container {
+  background-color: #1f2128 !important;
+  border: 1px solid rgba(255, 255, 255, 0.15) !important;
+  border-radius: 0.5rem !important;
+}
+
+.stdropdown-input {
+  background-color: transparent !important;
+}
+
+.stdropdown-input input,
+.stsearch-box input {
+  background-color: transparent !important;
+  color: #fff !important;
+  border: none !important;
+}
+
+.stdropdown-input input::placeholder,
+.stsearch-box input::placeholder {
+  color: #9ca3af !important; /* gray-400 */
+}
+
+/* The actual open dropdown list */
+.stdropdown-menu {
+  background-color: #17191f !important;
+  border: 1px solid rgba(255, 255, 255, 0.1) !important;
+  border-radius: 0.5rem !important;
+}
+
+.stdropdown-item {
+  color: #e5e7eb !important; /* gray-200 */
+  background-color: transparent !important;
+}
+
+.stdropdown-item:hover {
+  background-color: rgba(255, 255, 255, 0.08) !important;
+}
+
+.stdropdown-item.selected {
+  background-color: #ef4444 !important; /* red-500, matches your accent */
+  color: #fff !important;
+}
+
+.stsearch-box {
+  background-color: transparent !important;
+}
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);

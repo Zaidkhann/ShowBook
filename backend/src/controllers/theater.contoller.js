@@ -4,17 +4,17 @@ import City from "../models/city.model.js"
 
 export const postTheater = async (req, res) => {
     try {
-        const { theaterName, movies, seats, location } = req.body
-        if (!theaterName || !movies || !seats || !location) {
+        const { theatreName, location, rows, columns } = req.body
+        if (!theatreName || !location ||!rows|| !columns) {
             return res.status(400).json({
                 "message": "All fields are required "
             })
         }
         const theater = await Theater.create({
-            theaterName,
-            movies,
-            seats,
-            location
+            theatreName,
+            location,
+            rows,
+            columns
         })
 
         const city = await City.findOne({ cityName: location.toLowerCase() });
@@ -58,8 +58,7 @@ export const getTheaterByLocation = async (req, res) => {
             })
         }
         return res.status(200).json({
-            "Found": `${theaters.length} theaters found in ${req.user.location}`,
-            message: "Theaters fetched successfully",
+            message: `${theaters.length} theaters found in ${req.user.location}`,
             theaters
         });
 

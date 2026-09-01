@@ -4,7 +4,7 @@ import authMiddleware from "../middleware/auth.middleware.js"
 import isAdminMiddleware from "../middleware/isAdmin.middleware.js"
 const router = express.Router()
 
-router.post('/post-theater', authMiddleware,isAdminMiddleware, postTheater)
-router.get('/getTheaters',authMiddleware,getTheaterByLocation)
+router.post('/post-theatre', authMiddleware, postTheater)
+router.get('/get-theaters',authMiddleware,getTheaterByLocation)
 
 export default router

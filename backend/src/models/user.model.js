@@ -22,13 +22,11 @@ const userSchema = new Schema({
         trim: true,
         minlength: [5, "Password must have 5 characters"]
     },
-    location: {
-        type: String,
-        required: true,
-        default: "Bhopal",
-        trim: true,
-
-    },
+     location: {
+    type: String,
+    default: "",
+    lowercase:true
+  },
     googleId: {
       type: String,
       unique: true,

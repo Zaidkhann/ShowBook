@@ -15,10 +15,13 @@ passport.use(
         const email = profile.emails?.[0]?.value;
 
         if (!email) {
-          return done(new Error("Google account does not provide an email"));
+          return done(
+            new Error("Google account does not provide an email"),
+            null
+          );
         }
 
-        // Check if this Google account already exists
+        // Check Google ID
         let user = await User.findOne({
           googleId: profile.id,
         });
@@ -27,12 +30,19 @@ passport.use(
           return done(null, user);
         }
 
-        // Check whether the email already exists
-        user = await User.findOne({ email });
+        // Check email
+        user = await User.findOne({
+          email: email,
+        });
 
         if (user) {
-          // Link Google account to existing user
           user.googleId = profile.id;
+
+          // Optional: add Google image if user doesn't already have one
+          if (!user.image && profile.photos?.[0]?.value) {
+            user.image = profile.photos[0].value;
+          }
+
           await user.save();
 
           return done(null, user);
@@ -40,22 +50,17 @@ passport.use(
 
         // Create new user
         user = await User.create({
-          username:
-            profile.displayName ||
-            email.split("@")[0],
-
-          email,
-          image: profile.photos?.[0]?.value,
-
+          username: profile.displayName || email.split("@")[0],
+          email: email,
+          image: profile.photos?.[0]?.value || "",
           googleId: profile.id,
-
-          location: "Bhopal",
-
+          location: "",
           role: "user",
         });
 
         return done(null, user);
       } catch (error) {
+        console.error("Google authentication error:", error);
         return done(error, null);
       }
     }

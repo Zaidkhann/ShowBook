@@ -3,9 +3,9 @@ import Movie from "../models/movie.model.js";
 
 
 export const postMovie = async(req,res)=>{
-    const {movieName,genre,duration,language,rating} = req.body
+    const {movieName,genre,coverImage,duration,language,rating} = req.body
 
-    if(!movieName||!genre||!language){
+    if(!movieName||!genre||!language||!coverImage){
         return res.status(400).json({
             "message":"All Fields are must required"
         })
@@ -14,6 +14,7 @@ export const postMovie = async(req,res)=>{
     const movie = await Movie.create({
         movieName,
         genre,
+        coverImage,
         rating,
         language,
         duration
@@ -25,7 +26,9 @@ export const postMovie = async(req,res)=>{
                 movieName: movie.movieName,
                 genre: movie.genre,
                 language:movie.language,
-                duration:movie.duration
+                coverImage:movie.coverImage,
+                duration:movie.duration,
+                rating:movie.rating
 
             }
         })
@@ -37,11 +40,11 @@ export const postMovie = async(req,res)=>{
 
 export const getAllMovie = async(req,res) =>{
     try{
-        const movie = await Movie.find({})
+        const movies = await Movie.find({})
         res.status(200).json({
             "message": "Successfully fetched All Movies",
-            "count": movie.length,
-            movie
+            "count": movies.length,
+            movies
                 })
     }
     catch(err){
