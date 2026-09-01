@@ -1,16 +1,16 @@
 import mongoose, { Schema } from "mongoose";
 
 const showSchema = new Schema({
-    movie: [{
+    movie: {
         type: mongoose.Types.ObjectId,
         ref: "Movie",
         required: true
-    }],
-    theaters: [{
+    },
+    theater: {
         type: mongoose.Types.ObjectId,
         ref: "Theater",
         required: true
-    }],
+    },
     showAt: {
     type: Date,
     required: true

@@ -67,3 +67,18 @@ export const getTheaterByLocation = async (req, res) => {
     }
 }
 
+export const getAllTheaters = async(req,res) =>{
+    try {
+        const user = await User.findById(req.user.userId);
+        if (!user) {
+            return res.status(404).json({ message: "User not found" });
+        }
+        const theaters = await Theater.find({})
+        res.status(200).json({
+            "message": "Successfully fetched All Movies",
+            theaters
+        })
+}catch(err){
+    return res.status(500).json({ message: err.message });
+}
+}
