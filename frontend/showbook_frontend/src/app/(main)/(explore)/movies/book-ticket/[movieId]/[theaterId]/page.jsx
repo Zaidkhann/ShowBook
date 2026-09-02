@@ -55,7 +55,7 @@ function page(){
     }
 
     return(
-        <TheatreLayout rows={theatre.rows} columns={theatre.columns}/>
+        <TheatreLayout theaterId={theaterId} rows={theatre.rows} columns={theatre.columns}/>
     )
 }
 

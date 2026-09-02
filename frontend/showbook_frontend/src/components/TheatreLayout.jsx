@@ -1,13 +1,15 @@
 "use client"
 
 import Image from "next/image"
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
-function TheatreLayout({ rows, columns }) {
+function TheatreLayout({ theaterId, rows, columns }) {
 
     const totalSeats = rows * columns;
 
-    const [selectedSeat, setSelectedSeat] = useState([])
+    const [selectedSeat, setSelectedSeat] = useState([]);
+    const [bookedSeats, setBookedSeats] = useState([]);
+
 
     const toggleSeat = (seat) => {
 
@@ -52,9 +54,48 @@ function TheatreLayout({ rows, columns }) {
 
         return 400;
     };
-    const onProceed = ()=>{
-        console.log("SEAT SELECTED: ",selectedSeat)
+    const onProceedPostSeats = async () => {
+        try {
+            const res = await fetch("http://localhost:5000/api/seat/post-seat", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({
+                    selectedSeat,
+                    theater: theaterId
+                })
+            }
+            )
+            const data = await res.json()
+            if (!res.ok) {
+            console.error("POST SEAT ERROR:", data);
+            return;
+        }
+
+        console.log("Booked seats posted:", data);
+        fetchSeats();
+        } catch (error) {
+            console.error(error);
+            return
+        } finally {
+            setSelectedSeat([])
+            setBookedSeats([])
+        }
     }
+    const fetchSeats = async () => {
+        try {
+            const res = await fetch(`http://localhost:5000/api/seat/get-seat/${theaterId}`)
+            const data = await res.json()
+            setBookedSeats(data.map(item => item.seat));
+        } catch (error) {
+            console.error(error);
+            return
+        }
+    }
+    useEffect(() => {
+        fetchSeats()
+    }, [theaterId])
 
     const totalPrice = selectedSeat.reduce(
         (total, item) => total + item.price,
@@ -87,12 +128,16 @@ function TheatreLayout({ rows, columns }) {
                         const isSelected = selectedSeat.some(
                             (item) => item.seat === seatNumber
                         );
+                        const isBooked = bookedSeats.includes(seatNumber);
 
                         return (
                             <div
                                 key={columnIndex}
-                                onClick={() =>
-                                    toggleSeat(seatNumber)
+                                onClick={() => {
+                                    if (!isBooked) {
+                                        toggleSeat(seatNumber)
+                                    }
+                                }
                                 }
                                 className={`
                                     flex
@@ -113,23 +158,30 @@ function TheatreLayout({ rows, columns }) {
                                     duration-200
                                     ease-out
 
-                                    ${isSelected
+                                    ${isBooked
                                         ? `
-                                            bg-emerald-500
-                                            border-emerald-400
-                                            text-white
-                                            scale-105
-                                            shadow-[0_0_15px_rgba(16,185,129,0.30)]
-                                          `
-                                        : `
-                                            bg-slate-800
-                                            border-slate-700
-                                            text-slate-400
-                                            hover:bg-slate-700
-                                            hover:border-slate-500
-                                            hover:text-white
-                                            hover:-translate-y-0.5
-                                          `
+        bg-red-900/60
+        border-red-700
+        text-red-400
+        cursor-not-allowed
+      `
+                                        : isSelected
+                                            ? `
+            bg-emerald-500
+            border-emerald-400
+            text-white
+            scale-105
+            shadow-[0_0_15px_rgba(16,185,129,0.30)]
+          `
+                                            : `
+            bg-slate-800
+            border-slate-700
+            text-slate-400
+            hover:bg-slate-700
+            hover:border-slate-500
+            hover:text-white
+            hover:-translate-y-0.5
+          `
                                     }
                                 `}
                             >
@@ -416,6 +468,16 @@ function TheatreLayout({ rows, columns }) {
                     " />
                     <span>Selected</span>
                 </div>
+                <div className="flex items-center gap-2">
+                    <span className="
+        h-4
+        w-4
+        rounded-md
+        bg-red-900/60
+        border border-red-700
+    " />
+                    <span>Booked</span>
+                </div>
 
             </div>
 
@@ -456,7 +518,7 @@ function TheatreLayout({ rows, columns }) {
                 </div>
                 <div className="w-full flex justify-center">
                     <button
-                    onClick={()=>onProceed}
+                        onClick={onProceedPostSeats}
                         className="
             w-full
             sm:w-auto

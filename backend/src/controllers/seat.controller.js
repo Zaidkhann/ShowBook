@@ -3,10 +3,11 @@ import Seat from "../models/seat.model.js";
 
 export const postSeat = async(req,res) =>{
     try{
-        const {seats,theatre} = req.body
-        const seatData = seats.map((seat) => ({
-            theatre,
-            seat
+        const {selectedSeat,theater} = req.body
+        const seatData = selectedSeat.map((seat) => ({
+            theater,
+            seat: seat.seat,
+            price: seat.price
         }));
         const createdSeats = await Seat.insertMany(seatData);
         res.status(201).json({
@@ -24,7 +25,7 @@ export const getSeat = async(req,res) =>{
     try{
         const {theaterId} = req.params;
         const seats = await Seat.find({
-            theatre: theaterId
+            theater: theaterId
         });
         res.status(200).json(seats);
 
