@@ -82,3 +82,25 @@ export const getAllTheaters = async(req,res) =>{
     return res.status(500).json({ message: err.message });
 }
 }
+
+export const getTheaterById = async(req,res) => {
+    try{
+        const theaterId = req.params.theaterId
+        const theater = await Theater.findById(theaterId)
+        if (!theater) {
+            return res.status(404).json({
+                message: "Theatre not found",
+            })
+        }
+        res.status(200).json({
+            message: "Theatre fetched successfully",
+            theater,
+        });
+
+    } catch (error) {
+        res.status(500).json({
+            message: error.message,
+        });
+    }
+
+}

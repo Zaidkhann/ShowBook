@@ -21,7 +21,7 @@ async function fetchMovies() {
     } catch (err) {
         console.error("Error fetching movies:", err);
         return [];
-    }
+    };
 }
 
 export default async function MoviesPage() {

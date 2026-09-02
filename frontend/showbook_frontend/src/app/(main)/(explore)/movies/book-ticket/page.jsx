@@ -29,7 +29,7 @@ export default async function theatresByLocation(){
   return (
     <div className="flex flex-col mt-8 gap-4">
         {theatres.map((theatre)=>(
-            <Link href= {`movies/book-ticket/${theatre._id}`}> <div key={theatre._id} className='border border-white bg-mist-900 p-3 h-12 rounded-sm text-white'>
+            <Link href= {`movies/list-theatres/${theatre._id}`}> <div key={theatre._id} className='border border-white bg-mist-900 p-3 h-12 rounded-sm text-white'>
                 <h2>{theatre.theatreName}</h2>
             </div></Link>
         ))}

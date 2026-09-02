@@ -79,7 +79,7 @@ export default function MovieCard({ movie }) {
 
         {/* Book button */}
         <Link
-          href={`/movies/book-ticket`}
+          href={`/movies/book-ticket/${movie._id}`}
           className="mt-4 flex w-full items-center justify-center rounded-xl bg-white py-2.5 text-sm font-semibold text-black transition-all hover:bg-zinc-200 active:scale-[0.98]"
         >
           Book Tickets

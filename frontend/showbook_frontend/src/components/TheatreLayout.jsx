@@ -11,7 +11,7 @@ function TheatreLayout({rows,columns}){
         style={{ gridTemplateColumns: `repeat(${columns},1fr)`,gridTemplateRows:`repeat(${rows},1fr)`,rowGap:"3px"}}
          id="layout">
         {Array.from({ length: totalSeats }).map((_,seat)=>(
-            <div  key={seat} className="flex justify-center gap-5 items-center h-8 w-8 border-2 bg-slate-500 rounded-lg">
+            <div  key={seat} className="flex justify-center gap-5 items-center cursor-pointer h-8 w-8 border-2 bg-slate-500 rounded-lg">
                 {seat+1}
             </div>
         ))}

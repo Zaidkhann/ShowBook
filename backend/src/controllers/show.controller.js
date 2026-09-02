@@ -25,3 +25,25 @@ export const postShow = async(req,res) => {
         })
     }
 }
+
+
+export const getShowByLocation = async(req,res)=>{
+    try{
+        const movieId = req.params.movieId;
+        const shows = await Show.find({
+            movie: movieId,
+        })
+        .populate("movie")
+        .populate("theater")
+        .sort({showAt: 1})
+        res.status(200).json({
+            message: "Shows fetched successfully",
+            shows,
+        });
+
+    } catch (error) {
+        res.status(500).json({
+            message: error.message,
+        });
+    }
+}
