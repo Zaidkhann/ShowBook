@@ -52,6 +52,9 @@ function TheatreLayout({ rows, columns }) {
 
         return 400;
     };
+    const onProceed = ()=>{
+        console.log("SEAT SELECTED: ",selectedSeat)
+    }
 
     const totalPrice = selectedSeat.reduce(
         (total, item) => total + item.price,
@@ -142,6 +145,7 @@ function TheatreLayout({ rows, columns }) {
 
     return (
         <div className="
+            my-10
             w-full
             max-w-5xl
             mx-auto
@@ -171,94 +175,7 @@ function TheatreLayout({ rows, columns }) {
                 </p>
             </div>
 
-            <div className="
-                w-full
-                flex
-                flex-wrap
-                justify-center
-                items-center
-                gap-3
-            ">
 
-                <div className="
-                    flex
-                    items-center
-                    gap-2
-                    px-4
-                    py-2
-                    rounded-xl
-                    bg-slate-800/60
-                    border border-slate-700
-                ">
-                    <span className="
-                        h-3
-                        w-3
-                        rounded-full
-                        bg-slate-400
-                    " />
-
-                    <span className="text-sm text-slate-300">
-                        Normal
-                    </span>
-
-                    <span className="text-sm font-semibold text-white">
-                        ₹200
-                    </span>
-                </div>
-
-                <div className="
-                    flex
-                    items-center
-                    gap-2
-                    px-4
-                    py-2
-                    rounded-xl
-                    bg-blue-500/10
-                    border border-blue-500/20
-                ">
-                    <span className="
-                        h-3
-                        w-3
-                        rounded-full
-                        bg-blue-400
-                    " />
-
-                    <span className="text-sm text-blue-300">
-                        Executive
-                    </span>
-
-                    <span className="text-sm font-semibold text-white">
-                        ₹300
-                    </span>
-                </div>
-
-                <div className="
-                    flex
-                    items-center
-                    gap-2
-                    px-4
-                    py-2
-                    rounded-xl
-                    bg-amber-500/10
-                    border border-amber-500/20
-                ">
-                    <span className="
-                        h-3
-                        w-3
-                        rounded-full
-                        bg-amber-400
-                    " />
-
-                    <span className="text-sm text-amber-300">
-                        Premium
-                    </span>
-
-                    <span className="text-sm font-semibold text-white">
-                        ₹400
-                    </span>
-                </div>
-
-            </div>
 
             <div className="w-full flex flex-col items-center gap-3">
 
@@ -276,6 +193,7 @@ function TheatreLayout({ rows, columns }) {
                     className="
                         w-[180px]
                         sm:w-[240px]
+                        rotate-180
                         h-auto
                         opacity-80
                         drop-shadow-[0_8px_15px_rgba(255,255,255,0.08)]
@@ -535,6 +453,35 @@ function TheatreLayout({ rows, columns }) {
                         {selectedSeat.length !== 1 ? "s" : ""}
                     </p>
 
+                </div>
+                <div className="w-full flex justify-center">
+                    <button
+                    onClick={()=>onProceed}
+                        className="
+            w-full
+            sm:w-auto
+            min-w-[180px]
+            px-8
+            py-3
+            rounded-xl
+            bg-red-600
+            text-white
+            font-semibold
+            text-sm
+            tracking-wide
+            shadow-[0_8px_25px_rgba(220,38,38,0.25)]
+            border border-red-500
+            transition-all
+            duration-200
+            hover:bg-red-500
+            hover:shadow-[0_10px_30px_rgba(220,38,38,0.35)]
+            hover:-translate-y-0.5
+            active:translate-y-0
+            active:scale-[0.98]
+        "
+                    >
+                        Proceed
+                    </button>
                 </div>
 
                 <div className="text-center sm:text-right">

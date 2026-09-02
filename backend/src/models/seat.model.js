@@ -1,20 +1,15 @@
 import mongoose,{Schema} from "mongoose"
 
 const seatSchema = new Schema({
-    seatNumber:{
-        type:Number,
+    seat:[{
+        type:String,
         required:true,
-        default:1
-    },
-    seatType:{
-        type: String,
-        enum: ["Normal","Premium","Vip"],
-        default: "Normal"
-    },
-    status:{
-        type: String,
-        enum:["reserved","available"],
-        default:"available"
+    }],
+    theatre:{
+        type: mongoose.Types.ObjectId,
+        ref:"Theater",
+        required: true
+      
     }
     
 })
