@@ -111,7 +111,7 @@ function page() {
                 {shows.length === 0 ? (
 
 
-                    <div className="flex min-h-[380px] flex-col items-center justify-center rounded-xl border border-[#22242a] bg-[#111216] px-6 text-center">
+                    <div className="flex min-h-95 flex-col items-center justify-center rounded-xl border border-[#22242a] bg-[#111216] px-6 text-center">
 
                         <div className="flex h-14 w-14 items-center justify-center rounded-full bg-[#1b1d22]">
 

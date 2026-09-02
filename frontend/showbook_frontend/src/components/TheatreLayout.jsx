@@ -1,28 +1,570 @@
 "use client"
+
 import Image from "next/image"
-function TheatreLayout({rows,columns}){
-    
+import { useState } from "react";
+
+function TheatreLayout({ rows, columns }) {
+
     const totalSeats = rows * columns;
-    
 
-    return(
-        <div className="border w-auto h-auto p-8 rounded-2xl border-slate-800 flex-col gap-3 items-center justify-center">
-        <div className="grid items-center justify-center gap-5 "
-        style={{ gridTemplateColumns: `repeat(${columns},1fr)`,gridTemplateRows:`repeat(${rows},1fr)`,rowGap:"3px"}}
-         id="layout">
-        {Array.from({ length: totalSeats }).map((_,seat)=>(
-            <div  key={seat} className="flex justify-center gap-5 items-center cursor-pointer h-8 w-8 border-2 bg-slate-500 rounded-lg">
-                {seat+1}
+    const [selectedSeat, setSelectedSeat] = useState([])
+
+    const toggleSeat = (seat) => {
+
+        const price = getSeatPrice(seat);
+
+        setSelectedSeat((prev) => {
+
+            const alreadySelected = prev.some(
+                (item) => item.seat === seat
+            );
+
+            if (alreadySelected) {
+                return prev.filter(
+                    (item) => item.seat !== seat
+                );
+            }
+
+            return [
+                ...prev,
+                {
+                    seat: seat,
+                    price: price
+                }
+            ]
+        })
+
+    }
+
+    console.log(selectedSeat)
+
+    const getSeatPrice = (seatNumber) => {
+
+        const row = Math.ceil(seatNumber / columns);
+
+        if (row <= 2) {
+            return 200;
+        }
+
+        if (row === 3) {
+            return 300;
+        }
+
+        return 400;
+    };
+
+    const totalPrice = selectedSeat.reduce(
+        (total, item) => total + item.price,
+        0
+    );
+
+    const renderSeats = (startRow, endRow) => {
+
+        return Array.from({
+            length: endRow - startRow + 1
+        }).map((_, rowIndex) => {
+
+            const actualRow = startRow + rowIndex;
+
+            return (
+                <div
+                    key={actualRow}
+                    className="flex justify-center items-center gap-2 sm:gap-3"
+                >
+
+                    {Array.from({
+                        length: columns
+                    }).map((_, columnIndex) => {
+
+                        const seatNumber =
+                            (actualRow - 1) * columns +
+                            columnIndex +
+                            1;
+
+                        const isSelected = selectedSeat.some(
+                            (item) => item.seat === seatNumber
+                        );
+
+                        return (
+                            <div
+                                key={columnIndex}
+                                onClick={() =>
+                                    toggleSeat(seatNumber)
+                                }
+                                className={`
+                                    flex
+                                    justify-center
+                                    items-center
+                                    cursor-pointer
+                                    select-none
+                                    h-8
+                                    w-8
+                                    sm:h-9
+                                    sm:w-9
+                                    rounded-lg
+                                    border
+                                    text-xs
+                                    sm:text-sm
+                                    font-semibold
+                                    transition-all
+                                    duration-200
+                                    ease-out
+
+                                    ${isSelected
+                                        ? `
+                                            bg-emerald-500
+                                            border-emerald-400
+                                            text-white
+                                            scale-105
+                                            shadow-[0_0_15px_rgba(16,185,129,0.30)]
+                                          `
+                                        : `
+                                            bg-slate-800
+                                            border-slate-700
+                                            text-slate-400
+                                            hover:bg-slate-700
+                                            hover:border-slate-500
+                                            hover:text-white
+                                            hover:-translate-y-0.5
+                                          `
+                                    }
+                                `}
+                            >
+                                {seatNumber}
+                            </div>
+                        )
+                    })}
+
+                </div>
+            )
+        })
+    }
+
+    return (
+        <div className="
+            w-full
+            max-w-5xl
+            mx-auto
+            rounded-3xl
+            border border-slate-800
+            bg-[#111318]
+            p-6 sm:p-10
+            shadow-[0_20px_60px_rgba(0,0,0,0.45)]
+            flex flex-col
+            items-center
+            gap-8
+        ">
+
+            <div className="w-full text-center space-y-2">
+                <h2 className="
+                    text-2xl
+                    sm:text-3xl
+                    font-bold
+                    text-white
+                    tracking-tight
+                ">
+                    Select Your Seats
+                </h2>
+
+                <p className="text-sm text-slate-400">
+                    Choose your preferred seating category
+                </p>
             </div>
-        ))}
+
+            <div className="
+                w-full
+                flex
+                flex-wrap
+                justify-center
+                items-center
+                gap-3
+            ">
+
+                <div className="
+                    flex
+                    items-center
+                    gap-2
+                    px-4
+                    py-2
+                    rounded-xl
+                    bg-slate-800/60
+                    border border-slate-700
+                ">
+                    <span className="
+                        h-3
+                        w-3
+                        rounded-full
+                        bg-slate-400
+                    " />
+
+                    <span className="text-sm text-slate-300">
+                        Normal
+                    </span>
+
+                    <span className="text-sm font-semibold text-white">
+                        ₹200
+                    </span>
+                </div>
+
+                <div className="
+                    flex
+                    items-center
+                    gap-2
+                    px-4
+                    py-2
+                    rounded-xl
+                    bg-blue-500/10
+                    border border-blue-500/20
+                ">
+                    <span className="
+                        h-3
+                        w-3
+                        rounded-full
+                        bg-blue-400
+                    " />
+
+                    <span className="text-sm text-blue-300">
+                        Executive
+                    </span>
+
+                    <span className="text-sm font-semibold text-white">
+                        ₹300
+                    </span>
+                </div>
+
+                <div className="
+                    flex
+                    items-center
+                    gap-2
+                    px-4
+                    py-2
+                    rounded-xl
+                    bg-amber-500/10
+                    border border-amber-500/20
+                ">
+                    <span className="
+                        h-3
+                        w-3
+                        rounded-full
+                        bg-amber-400
+                    " />
+
+                    <span className="text-sm text-amber-300">
+                        Premium
+                    </span>
+
+                    <span className="text-sm font-semibold text-white">
+                        ₹400
+                    </span>
+                </div>
+
             </div>
-            <div className="flex justify-center items-center mt-32" >
-            <Image className="self-center" src = "/screen.png" alt="All eyes here" width={500} height={100}/>
+
+            <div className="w-full flex flex-col items-center gap-3">
+
+                <div className="
+                    w-[85%]
+                    h-[2px]
+                    rounded-full
+                    bg-gradient-to-r
+                    from-transparent
+                    via-slate-500
+                    to-transparent
+                " />
+
+                <Image
+                    className="
+                        w-[180px]
+                        sm:w-[240px]
+                        h-auto
+                        opacity-80
+                        drop-shadow-[0_8px_15px_rgba(255,255,255,0.08)]
+                    "
+                    src="/screen.png"
+                    alt="All eyes here"
+                    width={200}
+                    height={50}
+                />
+
+                <p className="
+                    text-[10px]
+                    uppercase
+                    tracking-[0.3em]
+                    font-semibold
+                    text-slate-500
+                ">
+                    Screen
+                </p>
+
             </div>
+
+            <div className="
+                w-full
+                overflow-x-auto
+                max-w-full
+                p-5
+                sm:p-8
+                rounded-2xl
+                bg-[#0c0e12]
+                border border-slate-800
+                shadow-inner
+            ">
+
+                <div className="
+                    flex
+                    flex-col
+                    items-center
+                    gap-8
+                    min-w-max
+                ">
+
+                    <div className="
+                        flex
+                        flex-col
+                        items-center
+                        gap-4
+                    ">
+
+                        <div className="
+                            flex
+                            items-center
+                            gap-3
+                        ">
+                            <span className="
+                                h-px
+                                w-10
+                                bg-slate-700
+                            " />
+
+                            <span className="
+                                text-xs
+                                uppercase
+                                tracking-[0.25em]
+                                font-bold
+                                text-slate-400
+                            ">
+                                Normal
+                            </span>
+
+                            <span className="
+                                text-xs
+                                font-semibold
+                                text-slate-600
+                            ">
+                                ₹200
+                            </span>
+
+                            <span className="
+                                h-px
+                                w-10
+                                bg-slate-700
+                            " />
+                        </div>
+
+                        {renderSeats(1, Math.min(2, rows))}
+
+                    </div>
+
+                    {rows >= 3 && (
+                        <div className="
+                            flex
+                            flex-col
+                            items-center
+                            gap-4
+                        ">
+
+                            <div className="
+                                flex
+                                items-center
+                                gap-3
+                            ">
+                                <span className="
+                                    h-px
+                                    w-10
+                                    bg-blue-500/30
+                                " />
+
+                                <span className="
+                                    text-xs
+                                    uppercase
+                                    tracking-[0.25em]
+                                    font-bold
+                                    text-blue-400
+                                ">
+                                    Executive
+                                </span>
+
+                                <span className="
+                                    text-xs
+                                    font-semibold
+                                    text-blue-500/70
+                                ">
+                                    ₹300
+                                </span>
+
+                                <span className="
+                                    h-px
+                                    w-10
+                                    bg-blue-500/30
+                                " />
+                            </div>
+
+                            {renderSeats(3, 3)}
+
+                        </div>
+                    )}
+
+                    {rows >= 4 && (
+                        <div className="
+                            flex
+                            flex-col
+                            items-center
+                            gap-4
+                        ">
+
+                            <div className="
+                                flex
+                                items-center
+                                gap-3
+                            ">
+                                <span className="
+                                    h-px
+                                    w-10
+                                    bg-amber-500/30
+                                " />
+
+                                <span className="
+                                    text-xs
+                                    uppercase
+                                    tracking-[0.25em]
+                                    font-bold
+                                    text-amber-400
+                                ">
+                                    Premium
+                                </span>
+
+                                <span className="
+                                    text-xs
+                                    font-semibold
+                                    text-amber-500/70
+                                ">
+                                    ₹400
+                                </span>
+
+                                <span className="
+                                    h-px
+                                    w-10
+                                    bg-amber-500/30
+                                " />
+                            </div>
+
+                            {renderSeats(4, rows)}
+
+                        </div>
+                    )}
+
+                </div>
+
+            </div>
+
+            <div className="
+                flex
+                items-center
+                justify-center
+                gap-6
+                flex-wrap
+                text-xs
+                text-slate-400
+            ">
+
+                <div className="flex items-center gap-2">
+                    <span className="
+                        h-4
+                        w-4
+                        rounded-md
+                        bg-slate-800
+                        border border-slate-700
+                    " />
+                    <span>Available</span>
+                </div>
+
+                <div className="flex items-center gap-2">
+                    <span className="
+                        h-4
+                        w-4
+                        rounded-md
+                        bg-emerald-500
+                        border border-emerald-400
+                    " />
+                    <span>Selected</span>
+                </div>
+
+            </div>
+
+            <div className="
+                w-full
+                border-t border-slate-800
+                pt-6
+                flex
+                flex-col
+                sm:flex-row
+                items-center
+                justify-between
+                gap-5
+            ">
+
+                <div className="text-center sm:text-left">
+
+                    <p className="
+                        text-xs
+                        uppercase
+                        tracking-wider
+                        text-slate-500
+                        font-semibold
+                    ">
+                        Selected Seats
+                    </p>
+
+                    <p className="
+                        mt-1
+                        text-lg
+                        font-bold
+                        text-white
+                    ">
+                        {selectedSeat.length} Seat
+                        {selectedSeat.length !== 1 ? "s" : ""}
+                    </p>
+
+                </div>
+
+                <div className="text-center sm:text-right">
+
+                    <p className="
+                        text-xs
+                        uppercase
+                        tracking-wider
+                        text-slate-500
+                        font-semibold
+                    ">
+                        Total Price
+                    </p>
+
+                    <h2 className="
+                        mt-1
+                        text-2xl
+                        sm:text-3xl
+                        font-extrabold
+                        text-white
+                    ">
+                        ₹{totalPrice}
+                    </h2>
+
+                </div>
+
+            </div>
+
         </div>
-        
-    ) 
+    )
 }
+
 export default TheatreLayout
-
-
