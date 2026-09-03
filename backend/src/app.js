@@ -8,6 +8,7 @@ import cityRoute from "./routes/city.route.js"
 import showRoute from "./routes/show.route.js"
 import bookingRoute from "./routes/booking.route.js"
 import updateProfileRoute from "./routes/user.route.js"
+import uploadRoutes from "./routes/upload.route.js";
 import cookieParser from "cookie-parser"
 import passport from "./config/google.strategy.js";
 
@@ -27,6 +28,7 @@ app.use("/api/city",cityRoute)
 app.use("/api/show",showRoute)
 app.use("/api/booking",bookingRoute)
 app.use("/api/user",updateProfileRoute)
+app.use("/api/upload", uploadRoutes);
 
 
 export default app

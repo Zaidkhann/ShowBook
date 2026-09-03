@@ -29,6 +29,6 @@
     ".next/types/**/*.ts",
     ".next/dev/types/**/*.ts",
     "**/*.mts"
-, "src/components/HeroCarousel.jsx"  ],
+, "src/components/HeroCarousel.jsx", "src/app/(main)/page.jsx", "src/components/Fileupload.jsx"  ],
   "exclude": ["node_modules"]
 }

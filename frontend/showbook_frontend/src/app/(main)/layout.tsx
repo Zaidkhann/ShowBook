@@ -1,6 +1,6 @@
 import Navbar from "@/components/Navbar";
 import Tags from "@/components/Tags";
-
+import SearchNav from "@/components/SearchNav"
 export default function MainLayout({
   children,
 }: {
@@ -9,7 +9,6 @@ export default function MainLayout({
   return (
     <>
       <Navbar />
-      <Tags />
       {children}
     </>
   );

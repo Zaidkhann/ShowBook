@@ -12,11 +12,10 @@ import {
 } from "@/components/ui/field"
 
 import { Input } from "@/components/ui/input"
-import {toast} from "sonner"
-// import { Toaster } from "../../../../components/ui/sonner"
+import { toast } from "sonner"
 import { Slider } from "../../../../components/ui/slider.tsx"
 
-import FileuploadComponent from "../../../../components/Fileupload.tsx"
+import FileuploadComponent from "../../../../components/Fileupload.jsx"
 
 import {
   Select,
@@ -37,6 +36,7 @@ export default function UploadForm() {
   const [rating, setRating] = useState("")
   const duration = `${hours}h ${minutes}m`
   const [coverImage, setCoverImage] = useState("")
+  const [coverFile, setCoverFile] = useState(null)
 
   const languages = [
     {
@@ -52,9 +52,28 @@ export default function UploadForm() {
       value: "tam",
     },
   ]
+
   const uploadMovie = async (e) => {
     e.preventDefault()
     try {
+      const formData = new FormData();
+
+      formData.append("coverImage", coverFile);
+
+      const uploadRes = await fetch(
+        "http://localhost:5000/api/upload/movie-cover",
+        {
+          method: "POST",
+          credentials: "include",
+          body: formData,
+        }
+      );
+
+      const uploadData = await uploadRes.json();
+
+      if (!uploadRes.ok) {
+        throw new Error(uploadData.message || "Image upload failed");
+      }
       const res = await fetch("http://localhost:5000/api/movie/post-movie", {
         method: "POST",
         headers: {
@@ -66,7 +85,7 @@ export default function UploadForm() {
           genre,
           rating,
           language,
-          coverImage,
+          coverImage: uploadData.url,
           duration
         })
       })
@@ -87,7 +106,6 @@ export default function UploadForm() {
 
   return (
     <form onSubmit={uploadMovie}>
-      {/* <Toaster/> */}
       <div className="min-h-screen bg-[#090a0c] px-4 py-8 text-white sm:px-6 lg:px-8">
         <div className="mx-auto w-full max-w-6xl">
 
@@ -440,7 +458,7 @@ export default function UploadForm() {
                   hover:border-[#ef1018]/60
                 "
               >
-                <FileuploadComponent coverImage={coverImage} setCoverImage={setCoverImage} />
+                <FileuploadComponent setCoverFile={setCoverFile} coverImage={coverImage} setCoverImage={setCoverImage} />
               </div>
 
               <p className="mt-3 text-center text-xs text-zinc-600">

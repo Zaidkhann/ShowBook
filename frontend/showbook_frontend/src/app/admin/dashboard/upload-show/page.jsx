@@ -109,6 +109,7 @@ function uploadShow() {
             }
 
             toast.success("Show posted successfully")
+            
 
             setMovieId("");
             setTheatreId("");
@@ -131,7 +132,6 @@ function uploadShow() {
 
             <div className="mx-auto max-w-4xl">
 
-                {/* ================= HEADER ================= */}
 
                 <div className="mb-8">
 
@@ -167,21 +167,18 @@ function uploadShow() {
                 </div>
 
 
-                {/* ================= MAIN CARD ================= */}
 
                 <form
                     onSubmit={handleSubmit}
                     className="relative overflow-hidden rounded-[28px] border border-white/[0.08] bg-[#101114] shadow-2xl shadow-black/50"
                 >
 
-                    {/* RED GLOW */}
 
                     <div className="pointer-events-none absolute -right-32 -top-32 h-80 w-80 rounded-full bg-red-600/[0.07] blur-3xl" />
 
                     <div className="pointer-events-none absolute -bottom-40 -left-40 h-80 w-80 rounded-full bg-red-600/[0.04] blur-3xl" />
 
 
-                    {/* ================= CARD HEADER ================= */}
 
                     <div className="relative border-b border-white/[0.07] px-6 py-6 sm:px-8">
 
@@ -214,12 +211,10 @@ function uploadShow() {
                     </div>
 
 
-                    {/* ================= FORM FIELDS ================= */}
 
                     <div className="relative grid gap-6 px-6 py-7 sm:px-8 lg:grid-cols-2">
 
 
-                        {/* ================= MOVIE ================= */}
 
                         <div>
 
@@ -276,7 +271,6 @@ function uploadShow() {
                         </div>
 
 
-                        {/* ================= THEATRE ================= */}
 
                         <div>
 
@@ -334,7 +328,6 @@ function uploadShow() {
                         </div>
 
 
-                        {/* ================= DATE ================= */}
 
                         <div>
 
@@ -364,7 +357,6 @@ function uploadShow() {
                         </div>
 
 
-                        {/* ================= TIME ================= */}
 
                         <div>
 
@@ -396,12 +388,10 @@ function uploadShow() {
                     </div>
 
 
-                    {/* ================= FOOTER ================= */}
 
                     <div className="relative flex flex-col gap-5 border-t border-white/[0.07] bg-white/[0.015] px-6 py-6 sm:flex-row sm:items-center sm:justify-between sm:px-8">
 
 
-                        {/* STATUS */}
 
                         <div className="flex items-center gap-3">
 
@@ -431,7 +421,6 @@ function uploadShow() {
                         </div>
 
 
-                        {/* SUBMIT BUTTON */}
 
                         <button
                             type="submit"

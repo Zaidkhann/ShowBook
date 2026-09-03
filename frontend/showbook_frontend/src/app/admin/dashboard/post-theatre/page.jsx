@@ -2,12 +2,14 @@
 import React, { useState } from 'react'
 import { toast } from 'sonner'
 import TheatreLayout from '../../../../components/TheatreLayout'
+import { useRouter } from 'next/navigation'
 function postTheatre() {
     const [theatreName,setTheatreName]=useState("")
     const[location,setLocation]=useState("")
     const [rows,setRows]=useState(1)
     const [columns,setColumns]=useState(1) 
     const [showLayout, setShowLayout] = useState(false)
+    const router = useRouter()
 
 const onSubmitHandler = async (e) => {
   e.preventDefault()
@@ -42,6 +44,8 @@ const onSubmitHandler = async (e) => {
 
     toast.success("Theatre posted successfully.")
     setShowLayout(true)
+    router.push("/admin/dashboard")
+    
    
 
   } catch (err) {

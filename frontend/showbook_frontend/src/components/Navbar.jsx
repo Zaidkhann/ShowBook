@@ -1,6 +1,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import { Search } from "lucide-react";
+import Tags from "./Tags"
 import {getSession} from "../lib/auth.js"
 import {LoginButton} from "../components/LoginButton.jsx"
 import LocationSelector from "../components/LocationSelector.jsx"
@@ -13,36 +14,20 @@ async function Navbar() {
 
 
   return (
-    <div className="relative z-50 flex h-14 w-full items-center overflow-visible rounded-sm bg-[#111318]">
+    <div className="z-50 flex h-14 w-full items-center backdrop-blur-2xl overflow-visible fixed rounded-sm bg-transparent">
 
-      {/* Logo */}
+
       <div className="flex items-center px-4">
         <Link href="/">
           <Image src="/logo3.png" alt={"Show Book"} width={150} height={40} priority className="h-auto w-auto" />
         </Link>
       </div>
 
-      {/* Search */}
-      <div className="relative">
-        <Search
-          size={20}
-          className="absolute left-2 top-1/2 -translate-y-1/2 text-gray-400"
-        />
+     
+      
+    <Tags/>
+     
 
-        <input
-          type="search"
-          placeholder="Search for Movies, Events, Place, Sports and Activities"
-          className="h-8 w-xl rounded-lg border border-[#292D35] bg-[#1B1E24] p-3 pl-9 text-sm text-[#F5F5F5] placeholder-[#8B909A] outline-none"
-        />
-      </div>
-
-      {/* Location
-      {/* <div className="flex "> */}
-      {/* <div className="relative z-10000 ml-auto px-8 text-white">
-        {user?.location }
-      </div>  */}
-
-      {/* Profile */}
       
       <div className="flex ml-auto shrink-0 mr-4 gap-6">
         <LocationSelector />

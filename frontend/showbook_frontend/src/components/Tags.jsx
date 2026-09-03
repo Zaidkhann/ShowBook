@@ -1,17 +1,53 @@
-import React from 'react'
-import Link from 'next/link'
+"use client"
+import React from "react";
+import Link from "next/link";
+import { usePathname } from "next/navigation";
 
 function Tags() {
-  return (
-    <div className='flex rounded-sm h-6  w-full items-center gap-6 bg-[#111318] px-12 text-sm text-white mt-3'> 
+  const pathname = usePathname();
+  const links = [
+    {name: "Home", href: "/"},
+    { name: "Movies", href: "/movies" },
+    { name: "Theaters", href: "/theatresbylocation" },
+    { name: "Contact", href: "/contact" },
+  ];
 
-    <Link className='hover:text-red-600' href={"/movies"}>Movies</Link>
-    <Link className='hover:text-red-600' href={"/stream"}>Stream</Link>
-    <Link className='hover:text-red-600' href={"/events"}>Events</Link>
-    <Link className='hover:text-red-600' href={"/sports"}>Sports</Link>
-    <Link className='hover:text-red-600' href={"/activities"}>Activities</Link>
-    </div>
-  )
+  return (
+    <nav className="flex ml-24 bg-transparent items-center justify-center gap-10">
+      {links.map((link) => {
+        const isActive = pathname === link.href || pathname.startsWith(link.href + "/");
+         return (
+        <Link
+          key={link.name}
+          href={link.href}
+          className={`
+            ${
+              isActive ? "text-white after:w-full" : "text-[#D5D7DC] hover:text-white after:w-0 hover:after:w-full"
+            }
+            relative
+            py-2
+            text-[15px]
+            font-medium
+            tracking-wide
+           
+            transition-all
+            duration-200
+            after:absolute
+            after:bottom-0
+            after:left-1/2
+            after:h-[2px]
+            after:-translate-x-1/2
+            after:bg-red-600
+            after:transition-all
+            after:duration-200
+          `}
+        >
+          {link.name}
+        </Link>
+         )
+})}
+    </nav>
+  );
 }
 
-export default Tags
+export default Tags;

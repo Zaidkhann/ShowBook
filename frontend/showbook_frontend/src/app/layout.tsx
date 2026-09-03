@@ -25,7 +25,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
       className={cn("h-full", "antialiased", geistSans.variable, geistMono.variable, "font-mono", jetbrainsMono.variable)}
     >
       
-      <body className="flex min-h-screen flex-col bg-[#090A0D] p-6">
+      <body className="flex min-h-screen flex-col bg-[#090A0D]  ">
         {children}</body>
     </html>
   );

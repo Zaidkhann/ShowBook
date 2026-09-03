@@ -235,7 +235,7 @@ function TheatreLayout({ theaterId, rows, columns }) {
                     w-[85%]
                     h-[2px]
                     rounded-full
-                    bg-gradient-to-r
+                    bg-gradient-to-r 
                     from-transparent
                     via-slate-500
                     to-transparent
@@ -245,7 +245,6 @@ function TheatreLayout({ theaterId, rows, columns }) {
                     className="
                         w-[180px]
                         sm:w-[240px]
-                        rotate-180
                         h-auto
                         opacity-80
                         drop-shadow-[0_8px_15px_rgba(255,255,255,0.08)]
