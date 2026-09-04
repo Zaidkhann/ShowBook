@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useState, useEffect } from "react";
+import { createPortal } from "react-dom";
 import { ChevronDown, Search, Navigation, X } from "lucide-react";
 import { City } from "country-state-city";
 
@@ -31,8 +32,11 @@ export default function LocationSelector({ initialLocation }) {
   const [isOpen, setIsOpen] = useState(false);
   const [searchTerm, setSearchTerm] = useState("");
   const [isDetecting, setIsDetecting] = useState(false);
+  const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
+    setMounted(true);
+
     const savedCity = localStorage.getItem("showbook_selected_city");
 
     if (savedCity) {
@@ -42,9 +46,7 @@ export default function LocationSelector({ initialLocation }) {
     }
   }, [initialLocation]);
 
-  // --------------------------------
-  // Save location to backend
-  // --------------------------------
+
   const saveLocationToDb = async (cityName) => {
     try {
       const response = await fetch(
@@ -76,9 +78,8 @@ export default function LocationSelector({ initialLocation }) {
     }
   };
 
-  // --------------------------------
-  // Select a city
-  // --------------------------------
+
+
   const handleCitySelect = (cityName) => {
     setSelectedCity(cityName);
 
@@ -92,9 +93,8 @@ export default function LocationSelector({ initialLocation }) {
     setIsOpen(false);
   };
 
-  // --------------------------------
-  // Detect user's location
-  // --------------------------------
+
+
   const handleDetectLocation = () => {
     if (!navigator.geolocation) {
       alert("Geolocation is not supported by your browser");
@@ -149,9 +149,8 @@ export default function LocationSelector({ initialLocation }) {
     );
   };
 
-  // --------------------------------
-  // Search
-  // --------------------------------
+
+
   const filteredPopular = POPULAR_CITIES.filter((city) =>
     city.name
       .toLowerCase()
@@ -164,134 +163,296 @@ export default function LocationSelector({ initialLocation }) {
       .includes(searchTerm.toLowerCase())
   );
 
-  return (
-    <>
-      {/* Location Selector Button */}
-      <button
-        onClick={() => setIsOpen(true)}
-        className="flex items-center gap-1.5 text-sm font-medium text-gray-200 hover:text-white transition"
-      >
-        <span>{selectedCity}</span>
 
-        <ChevronDown className="h-4 w-4 text-gray-400" />
-      </button>
 
-      {/* Location Modal */}
-      {isOpen && (
-        <div className="fixed inset-0 z-[10000] flex items-center justify-center bg-black/70 backdrop-blur-sm p-4">
-          <div className="w-full max-w-2xl rounded-xl bg-[#1B1E24] text-white shadow-2xl border border-[#292D35] overflow-hidden">
+  const locationModal =
+    isOpen && mounted
+      ? createPortal(
+          <div
+            className="
+              fixed inset-0 z-[99999]
+              flex items-center justify-center
+              bg-black/70
+              backdrop-blur-sm
+              p-4
+            "
+            onClick={() => setIsOpen(false)}
+          >
+            <div
+              className="
+                relative
+                flex
+                w-full
+                max-w-3xl
+                max-h-[85vh]
+                flex-col
+                overflow-hidden
+                rounded-2xl
+                border border-[#292D35]
+                bg-[#1B1E24]
+                text-white
+                shadow-2xl
+              "
+              onClick={(e) => e.stopPropagation()}
+            >
 
-            {/* Search */}
-            <div className="p-4 border-b border-[#292D35] flex items-center gap-3">
-              <Search className="w-5 h-5 text-gray-400" />
-
-              <input
-                type="text"
-                placeholder="Search for your city..."
-                value={searchTerm}
-                onChange={(e) =>
-                  setSearchTerm(e.target.value)
-                }
-                className="w-full text-base outline-none bg-transparent placeholder-gray-500 text-white"
-                autoFocus
-              />
-
-              <button
-                onClick={() => setIsOpen(false)}
-                className="p-1 hover:bg-[#292D35] rounded-full text-gray-400 hover:text-white"
+              <div
+                className="
+                  flex
+                  shrink-0
+                  items-center
+                  gap-3
+                  border-b border-[#292D35]
+                  bg-[#1B1E24]
+                  p-4
+                "
               >
-                <X className="w-5 h-5" />
-              </button>
-            </div>
+                <Search className="h-5 w-5 shrink-0 text-gray-400" />
 
-            <div className="p-6 max-h-[75vh] overflow-y-auto space-y-6">
-
-              {/* Detect Location */}
-              <button
-                onClick={handleDetectLocation}
-                disabled={isDetecting}
-                className="flex items-center gap-2 text-rose-500 font-medium hover:text-rose-400 transition"
-              >
-                <Navigation
-                  className={`w-4 h-4 ${
-                    isDetecting ? "animate-spin" : ""
-                  }`}
+                <input
+                  type="text"
+                  placeholder="Search for your city..."
+                  value={searchTerm}
+                  onChange={(e) =>
+                    setSearchTerm(e.target.value)
+                  }
+                  className="
+                    min-w-0
+                    w-full
+                    bg-transparent
+                    text-base
+                    text-white
+                    outline-none
+                    placeholder:text-gray-500
+                  "
+                  autoFocus
                 />
 
-                {isDetecting
-                  ? "Detecting location..."
-                  : "Detect my location"}
-              </button>
+                <button
+                  onClick={() => setIsOpen(false)}
+                  className="
+                    shrink-0
+                    rounded-full
+                    p-1.5
+                    text-gray-400
+                    transition
+                    hover:bg-[#292D35]
+                    hover:text-white
+                  "
+                >
+                  <X className="h-5 w-5" />
+                </button>
+              </div>
 
-              {/* Popular Cities */}
-              {!searchTerm && (
+
+              <div
+                className="
+                  min-h-0
+                  overflow-x-hidden
+                  overflow-y-auto
+                  p-6
+                  space-y-7
+                "
+              >
+
+                <button
+                  onClick={handleDetectLocation}
+                  disabled={isDetecting}
+                  className="
+                    flex
+                    items-center
+                    gap-2
+                    font-medium
+                    text-rose-500
+                    transition
+                    hover:text-rose-400
+                    disabled:opacity-50
+                  "
+                >
+                  <Navigation
+                    className={`h-4 w-4 ${
+                      isDetecting ? "animate-spin" : ""
+                    }`}
+                  />
+
+                  {isDetecting
+                    ? "Detecting location..."
+                    : "Detect my location"}
+                </button>
+
+
+                {!searchTerm && (
+                  <div>
+                    <h3
+                      className="
+                        mb-4
+                        text-xs
+                        font-semibold
+                        uppercase
+                        tracking-wider
+                        text-gray-400
+                      "
+                    >
+                      Popular Cities
+                    </h3>
+
+                    <div
+                      className="
+                        grid
+                        grid-cols-2
+                        gap-3
+                        sm:grid-cols-3
+                        md:grid-cols-5
+                      "
+                    >
+                      {POPULAR_CITIES.map((city) => (
+                        <button
+                          key={city.id}
+                          onClick={() =>
+                            handleCitySelect(city.name)
+                          }
+                          className={`
+                            flex
+                            min-w-0
+                            flex-col
+                            items-center
+                            justify-center
+                            rounded-xl
+                            border
+                            p-3
+                            transition
+                            group
+
+                            ${
+                              selectedCity === city.name
+                                ? "border-rose-500 bg-rose-500/10"
+                                : "border-[#292D35] bg-[#111318] hover:border-rose-500"
+                            }
+                          `}
+                        >
+                          <span
+                            className="
+                              mb-1
+                              text-2xl
+                              transition-transform
+                              group-hover:scale-110
+                            "
+                          >
+                            {city.icon}
+                          </span>
+
+                          <span
+                            className="
+                              w-full
+                              truncate
+                              text-center
+                              text-xs
+                              font-medium
+                              text-gray-300
+                              group-hover:text-rose-400
+                            "
+                          >
+                            {city.name}
+                          </span>
+                        </button>
+                      ))}
+                    </div>
+                  </div>
+                )}
+
+                {/* Other Cities */}
+
                 <div>
-                  <h3 className="text-xs font-semibold text-gray-400 uppercase tracking-wider mb-4">
-                    Popular Cities
+                  <h3
+                    className="
+                      mb-3
+                      text-xs
+                      font-semibold
+                      uppercase
+                      tracking-wider
+                      text-gray-400
+                    "
+                  >
+                    {searchTerm
+                      ? "Search Results"
+                      : "Other Cities"}
                   </h3>
 
-                  <div className="grid grid-cols-5 gap-3">
-                    {POPULAR_CITIES.map((city) => (
+                  <div
+                    className="
+                      grid
+                      grid-cols-2
+                      gap-x-4
+                      gap-y-1
+                      sm:grid-cols-3
+                      md:grid-cols-4
+                    "
+                  >
+                    {[
+                      ...filteredPopular.map(
+                        (city) => city.name
+                      ),
+                      ...filteredAll,
+                    ].map((cityName, idx) => (
                       <button
-                        key={city.id}
+                        key={`${cityName}-${idx}`}
                         onClick={() =>
-                          handleCitySelect(city.name)
+                          handleCitySelect(cityName)
                         }
-                        className={`flex flex-col items-center p-3 rounded-lg border hover:border-rose-500 transition group ${
-                          selectedCity === city.name
-                            ? "border-rose-500 bg-rose-500/10"
-                            : "border-[#292D35] bg-[#111318]"
-                        }`}
-                      >
-                        <span className="text-2xl mb-1 group-hover:scale-110 transition-transform">
-                          {city.icon}
-                        </span>
+                        className={`
+                          min-w-0
+                          truncate
+                          rounded-lg
+                          px-3
+                          py-2
+                          text-left
+                          text-sm
+                          transition
 
-                        <span className="text-xs font-medium text-gray-300 group-hover:text-rose-400">
-                          {city.name}
-                        </span>
+                          ${
+                            selectedCity === cityName
+                              ? "font-bold text-rose-500"
+                              : "text-gray-400 hover:bg-[#292D35] hover:text-rose-400"
+                          }
+                        `}
+                      >
+                        {cityName}
                       </button>
                     ))}
                   </div>
                 </div>
-              )}
-
-              {/* Other Cities */}
-              <div>
-                <h3 className="text-xs font-semibold text-gray-400 uppercase tracking-wider mb-3">
-                  {searchTerm
-                    ? "Search Results"
-                    : "Other Cities"}
-                </h3>
-
-                <div className="grid grid-cols-2 md:grid-cols-4 gap-2">
-                  {[
-                    ...filteredPopular.map(
-                      (city) => city.name
-                    ),
-                    ...filteredAll,
-                  ].map((cityName, idx) => (
-                    <button
-                      key={`${cityName}-${idx}`}
-                      onClick={() =>
-                        handleCitySelect(cityName)
-                      }
-                      className={`text-left text-sm py-1.5 px-2 rounded hover:text-rose-400 ${
-                        selectedCity === cityName
-                          ? "font-bold text-rose-500"
-                          : "text-gray-400"
-                      }`}
-                    >
-                      {cityName}
-                    </button>
-                  ))}
-                </div>
               </div>
             </div>
-          </div>
-        </div>
-      )}
+          </div>,
+          document.body
+        )
+      : null;
+
+  return (
+    <>
+
+      <button
+        onClick={() => setIsOpen(true)}
+        className="
+          flex
+          items-center
+          gap-1.5
+          text-sm
+          font-medium
+          text-gray-200
+          transition
+          hover:text-white
+        "
+      >
+        <span className="max-w-[120px] truncate">
+          {selectedCity}
+        </span>
+
+        <ChevronDown className="h-4 w-4 shrink-0 text-gray-400" />
+      </button>
+
+
+      {locationModal}
     </>
   );
 }
-

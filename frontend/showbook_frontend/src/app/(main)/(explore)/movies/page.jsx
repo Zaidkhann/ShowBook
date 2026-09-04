@@ -1,6 +1,6 @@
 import MovieCard from "../../../../components/MovieCard";
 import {cookies} from "next/headers"
-import {redirect} from "next/navigation"
+import {redirect, unauthorized} from "next/navigation"
 
 export async function fetchMovies() {
     
@@ -14,16 +14,13 @@ export async function fetchMovies() {
                 }
             }
         );
-        if(res.status === 401){
-            redirect("/login")
-            return
-        }
+      
         if (!res.ok) {
-            return [];
+            return {movies:[],unauthorized: res.status === 401};
         }
     try {
         const data = await res.json()
-        return data.movies || [];
+        return {movies: data.movies || [], unauthorized:false};
     } catch (err) {
         console.error("Error fetching movies:", err);
         return [];
@@ -31,7 +28,10 @@ export async function fetchMovies() {
 }
 
 export default async function MoviesPage() {
-    const movies = await fetchMovies();
+    const {movies , unauthorized} = await fetchMovies();
+    if(unauthorized){
+        redirect("/login")
+    }
 
     return (
         <div className="mx-auto max-w-7xl px-6 py-10">

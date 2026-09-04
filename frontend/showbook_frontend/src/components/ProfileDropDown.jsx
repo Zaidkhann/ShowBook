@@ -5,6 +5,7 @@ import {
   LogOutIcon,
   SettingsIcon,
   UserIcon,
+  ShieldUser
 } from "lucide-react"
 import Image from "next/image"
 import { useRouter } from "next/navigation"
@@ -16,7 +17,7 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
-
+import Link from "next/link"
 
 export function DropdownMenuIcons({ image }){
   const router = useRouter();
@@ -47,11 +48,15 @@ export function DropdownMenuIcons({ image }){
           <UserIcon className="mr-1 h-5 w-5"  />
           Profile
         </DropdownMenuItem>
+        <Link href={"/admin/dashboard"}>
         <DropdownMenuItem className="cursor-pointer rounded-lg px-3 py-2.5 text-[14px]
                focus:bg-[#252525] focus:text-white">
-          <CreditCardIcon className="mr-1 h-5 w-5" />
-          Billing
+          <ShieldUser className="mr-1 h-5 w-5" />
+          
+          Admin
         </DropdownMenuItem>
+        </Link> 
+
         <DropdownMenuItem    className="cursor-pointer rounded-lg px-3 py-2.5 text-[14px]
                focus:bg-[#252525] focus:text-white"
 >

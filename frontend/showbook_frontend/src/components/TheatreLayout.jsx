@@ -2,14 +2,19 @@
 
 import Image from "next/image"
 import { useEffect, useState } from "react";
+import {  useParams, useRouter, useSearchParams } from "next/navigation";
+import { MoveIcon } from "lucide-react";
 
 function TheatreLayout({ theaterId, rows, columns }) {
-
+    const searchParams = useSearchParams()
     const totalSeats = rows * columns;
-
+    const router = useRouter()
+    const {movieId} =  useParams()
+    const theaterName = searchParams.get("theaterName")
+    const theaterLocation = searchParams.get("theaterLocation")
+    const showTime = searchParams.get("showTime")
     const [selectedSeat, setSelectedSeat] = useState([]);
     const [bookedSeats, setBookedSeats] = useState([]);
-
 
     const toggleSeat = (seat) => {
 
@@ -44,11 +49,11 @@ function TheatreLayout({ theaterId, rows, columns }) {
 
         const row = Math.ceil(seatNumber / columns);
 
-        if (row <= 2) {
+        if (row <= 5) {
             return 200;
         }
 
-        if (row === 3) {
+        if (row <= 10) {
             return 300;
         }
 
@@ -56,6 +61,9 @@ function TheatreLayout({ theaterId, rows, columns }) {
     };
     const onProceedPostSeats = async () => {
         try {
+            if(selectedSeat.length === 0){
+                return {}
+            }
             const res = await fetch("http://localhost:5000/api/seat/post-seat", {
                 method: "POST",
                 headers: {
@@ -69,18 +77,20 @@ function TheatreLayout({ theaterId, rows, columns }) {
             )
             const data = await res.json()
             if (!res.ok) {
-            console.error("POST SEAT ERROR:", data);
-            return;
-        }
+                console.error("POST SEAT ERROR:", data);
+                return;
+            }
 
-        console.log("Booked seats posted:", data);
-        fetchSeats();
+            console.log("Booked seats posted:", data);
+            fetchSeats();
+            router.push(`/movies/${theaterId}/booking?movieId=${movieId}&theaterId=${theaterId}&seats=${selectedSeat?.map((array)=>(array.seat)).join(",")}&amount=${totalPrice}&theaterName=${theaterName}&theaterLocation=${theaterLocation}&showTime=${showTime}`)
+
         } catch (error) {
             console.error(error);
             return
         } finally {
             setSelectedSeat([])
-            setBookedSeats([])
+           
         }
     }
     const fetchSeats = async () => {
@@ -101,7 +111,7 @@ function TheatreLayout({ theaterId, rows, columns }) {
         (total, item) => total + item.price,
         0
     );
-
+    
     const renderSeats = (startRow, endRow) => {
 
         return Array.from({
@@ -109,7 +119,6 @@ function TheatreLayout({ theaterId, rows, columns }) {
         }).map((_, rowIndex) => {
 
             const actualRow = startRow + rowIndex;
-
             return (
                 <div
                     key={actualRow}
@@ -330,7 +339,7 @@ function TheatreLayout({ theaterId, rows, columns }) {
                             " />
                         </div>
 
-                        {renderSeats(1, Math.min(2, rows))}
+                        {renderSeats(1, Math.min(5, rows))}
 
                     </div>
 
@@ -378,7 +387,7 @@ function TheatreLayout({ theaterId, rows, columns }) {
                                 " />
                             </div>
 
-                            {renderSeats(3, 3)}
+                            {renderSeats(6, 10)}
 
                         </div>
                     )}
@@ -427,7 +436,7 @@ function TheatreLayout({ theaterId, rows, columns }) {
                                 " />
                             </div>
 
-                            {renderSeats(4, rows)}
+                            {renderSeats(15, rows)}
 
                         </div>
                     )}

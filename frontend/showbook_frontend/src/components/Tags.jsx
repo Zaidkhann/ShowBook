@@ -9,12 +9,10 @@ function Tags() {
     {name: "Home", href: "/"},
     { name: "Movies", href: "/movies" },
     { name: "Theaters", href: "/theatresbylocation" },
-    { name: "Contact", href: "/contact" },
   ];
 
   return (
-    <nav className="flex ml-24 bg-transparent items-center justify-center gap-10">
-      {links.map((link) => {
+    <nav className="flex w-max shrink-0 items-center justify-center gap-5 ml-4 md:ml-24 md:gap-10"> {links.map((link) => {
         const isActive = pathname === link.href || pathname.startsWith(link.href + "/");
          return (
         <Link

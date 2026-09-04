@@ -85,13 +85,11 @@ function page() {
 
         <div className="relative overflow-hidden rounded-2xl border border-[#25262c] bg-[#14151a] shadow-2xl">
 
-            {/* Subtle background glow */}
             <div className="absolute -right-20 -top-24 h-64 w-64 rounded-full bg-[#f84464]/10 blur-3xl" />
             <div className="absolute -bottom-32 left-1/3 h-64 w-64 rounded-full bg-[#f84464]/5 blur-3xl" />
 
             <div className="relative flex flex-col gap-6 p-5 sm:flex-row sm:items-center sm:p-6 md:p-7">
 
-                {/* Movie Poster */}
                 <div className="relative h-48 w-32 shrink-0 overflow-hidden rounded-xl border border-[#35363d] bg-[#1b1d22] shadow-xl">
                     {shows[0]?.movie?.coverImage ? (
                         <Image
@@ -113,7 +111,6 @@ function page() {
                     <div className="absolute inset-x-0 bottom-0 h-16 bg-gradient-to-t from-black/70 to-transparent" />
                 </div>
 
-                {/* Movie Details */}
                 <div className="min-w-0 flex-1">
 
                     <div className="flex items-center gap-2">
@@ -177,7 +174,6 @@ function page() {
 
         </div>
 
-        {/* Section Heading */}
         <div className="flex items-end justify-between pt-8">
 
             <div>
@@ -339,7 +335,7 @@ function page() {
                                     </div>
                                  
 
-                                    <Link href={`/movies/${show.movie._id}/${show.theater._id}`}>
+                                    <Link href={`/movies/${show.movie._id}/${show.theater._id}?theaterName=${encodeURIComponent(show.theater.theatreName)}&theaterLocation=${show.theater.location}&showTime=${new Date(show.showAt).toLocaleString()}`}>
                                     <button
 
                                         className="flex w-full items-center justify-center gap-2 rounded-md bg-[#f84464] px-7 py-2.5 text-sm font-semibold text-white transition-all duration-200 hover:bg-[#e63d5c] active:scale-[0.98] md:w-auto"

@@ -55,19 +55,19 @@ const slides = [
 ];
 
 export default async function Home() {
-  // const movies = await fetchMovies()
+  const {movies} = await fetchMovies()
   return (
     <main className="w-full self-stretch">
       <div className="px-4 py-4">
         <HeroCarousel slides={slides} autoPlayInterval={2000} />
       </div>
-      {/* <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 p-4">
+      <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 p-4">
       {movies.map((movie)=>(
         <div key={movie._id}>
           <MovieCard movie={movie}/>
         </div>
       ))}
-      </div> */}
+      </div>
       
    
     </main>
