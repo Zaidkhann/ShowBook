@@ -14,6 +14,7 @@ import {
   Pencil,
   CheckCircle2,
 } from "lucide-react";
+import { sendBookingEmail } from "../../../../../../lib/send-mail";
 
 function Booking() {
   const router = useRouter();
@@ -26,6 +27,8 @@ function Booking() {
   const showTime = searchParams.get("showTime");
   const theaterId = searchParams.get("theaterId");
   const movieId = searchParams.get("movieId");
+  const [loading ,setLoading] = useState(true)
+  const [user,setUser] = useState(null)
 
   const [movie, setMovie] = useState(null);
   const [selectedPayment, setSelectedPayment] = useState("upi");
@@ -51,22 +54,44 @@ function Booking() {
       return null;
     }
   };
+  const fetchUser = async() =>{
+    try{
+      const res = await fetch("http://localhost:5000/api/auth/me",{
+        credentials:"include",
+
+      })
+      const data = await res.json()
+      if (!res.ok) {
+        throw new Error(data.message || "Failed to fetch User");
+      }
+      return data.user
+    }catch (error) {
+      console.log("Failed to get User:", error);
+      return null;
+  }
+}
 
   useEffect(() => {
     const getMovie = async () => {
       const movieData = await fetchMovie();
       setMovie(movieData);
     };
+    const getUser = async()=>{
+      const userData = await fetchUser();
+      setUser(userData)
+    }
 
     if (movieId) {
       getMovie();
     }
+    getUser()
   }, [movieId]);
 
   const selectedSeats = seats ? seats.split(",") : [];
   const ticketPrice = Number(amount) || 0;
   const convenienceFee = Number((ticketPrice * 0.05).toFixed(2));
   const totalAmount = ticketPrice + convenienceFee;
+
 
   const paymentOptions = [
     {
@@ -96,11 +121,29 @@ function Booking() {
     },
   ];
 
-  const handlePayment = () => {
+const handlePayment = async () => {
+  try {
+    setLoading(true);
+    await sendBookingEmail({
+      email: user?.email,
+      userName:user?.username,
+      movieName:movie?.movieName,
+      seats,
+      showTime,
+      theaterLocation,
+      theaterName,
+      
+    })
+
     router.push(
       `/movies/${theaterId}/booking/booking-success?movieId=${movieId}&theaterId=${theaterId}&seats=${seats}&amount=${totalAmount}`
     );
-  };
+  } catch (err) {
+    console.error("EMAIL ERROR:", err);
+  } finally {
+    setLoading(false);
+  }
+};
 
   return (
     <div className="min-h-screen bg-[#0b0d10] text-gray-100">

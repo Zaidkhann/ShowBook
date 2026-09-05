@@ -11,6 +11,7 @@ import updateProfileRoute from "./routes/user.route.js"
 import uploadRoutes from "./routes/upload.route.js";
 import cookieParser from "cookie-parser"
 import passport from "./config/google.strategy.js";
+import mailRoute from "./routes/mail.route.js";
 
 const app = express()
 app.use(cors({
@@ -29,6 +30,6 @@ app.use("/api/show",showRoute)
 app.use("/api/booking",bookingRoute)
 app.use("/api/user",updateProfileRoute)
 app.use("/api/upload", uploadRoutes);
-
+app.use("/api/mail", mailRoute);
 
 export default app

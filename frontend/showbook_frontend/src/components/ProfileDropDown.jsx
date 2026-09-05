@@ -57,12 +57,12 @@ export function DropdownMenuIcons({ image }){
         </DropdownMenuItem>
         </Link> 
 
-        <DropdownMenuItem    className="cursor-pointer rounded-lg px-3 py-2.5 text-[14px]
+        {/* <DropdownMenuItem    className="cursor-pointer rounded-lg px-3 py-2.5 text-[14px]
                focus:bg-[#252525] focus:text-white"
 >
           <SettingsIcon className="mr-1 h-5 w-5" />
           Settings
-        </DropdownMenuItem>
+        </DropdownMenuItem> */}
         <DropdownMenuSeparator className="my-1 bg-[#303030]" />
         <DropdownMenuItem onClick={()=>handleLogout(router)}  variant="destructive"  className="cursor-pointer rounded-lg px-3 py-2.5 text-[14px]
                text-red-400 focus:bg-[#252525] focus:text-red-400">
