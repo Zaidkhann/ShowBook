@@ -4,6 +4,9 @@ import { SignupForm } from "@/components/signup-form"
 import { RowsIcon } from "@phosphor-icons/react"
 
 export default function SignupPage() {
+  
+
+
   return (
     <div className="min-h-screen bg-[#0F1115] text-white flex flex-col">
 

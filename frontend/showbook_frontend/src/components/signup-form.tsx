@@ -3,6 +3,7 @@
 import { cn } from "@/lib/utils"
 import { Button } from "@/components/ui/button"
 import {useRouter} from "next/navigation"
+// import {sendRegisteredEMail} from "..//lib/send-mail.js"
 import {
   Field,
   FieldDescription,
@@ -20,11 +21,35 @@ export function SignupForm({
   const [email, setEmail] = useState("")
   const [password, setPassword] = useState("")
   const [data, setData] = useState("")
+  const [loading,setLoading] = useState(false)
   const router = useRouter()
+  const sendRegisteredEmail = async ({ email, userName }: { email: string; userName: string }) => {
+    try {
+      const res = await fetch("http://localhost:5000/api/mail/registeration-confirmation", {
+        method: "POST",
+        credentials: "include",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ email, userName }),
+      })
+      const result = await res.json()
+      if (!res.ok) {
+        throw new Error(result.message || "Registration email sending failed")
+      }
+      console.log("✅ Registration email sent:", result)
+    } catch (error) {
+      console.error("❌ Email error:", error)
+    }
+  }
   const handleSubmit = async (e: any) => {
     e.preventDefault()
 
     try {
+      if (loading) return
+
+      setLoading(true)
+
       const res = await fetch("http://localhost:5000/api/auth/register", {
         method: "POST",
         headers: {
@@ -40,7 +65,7 @@ export function SignupForm({
 
       const result = await res.json();
 
-      if (res.status == 409) {
+      if (res.status === 409) {
         setData(result.message)
         return
       }
@@ -52,11 +77,13 @@ export function SignupForm({
 
       console.log("Signup successful:", result.message)
       setData(result.message)
+      await sendRegisteredEmail({email,userName:username})
       router.push("/")
-
-
     } catch (error) {
-      console.error("Login error:", error)
+      console.error("Signup error:", error)
+    }
+    finally{
+      setLoading(false)
     }
   }
 

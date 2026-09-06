@@ -21,7 +21,6 @@ passport.use(
           );
         }
 
-        // Check Google ID
         let user = await User.findOne({
           googleId: profile.id,
         });
@@ -30,7 +29,6 @@ passport.use(
           return done(null, user);
         }
 
-        // Check email
         user = await User.findOne({
           email: email,
         });
@@ -38,7 +36,6 @@ passport.use(
         if (user) {
           user.googleId = profile.id;
 
-          // Optional: add Google image if user doesn't already have one
           if (!user.image && profile.photos?.[0]?.value) {
             user.image = profile.photos[0].value;
           }
@@ -48,7 +45,6 @@ passport.use(
           return done(null, user);
         }
 
-        // Create new user
         user = await User.create({
           username: profile.displayName || email.split("@")[0],
           email: email,
@@ -57,6 +53,8 @@ passport.use(
           location: "",
           role: "user",
         });
+        user = user.toObject();
+        user.isNewUser = true;
 
         return done(null, user);
       } catch (error) {

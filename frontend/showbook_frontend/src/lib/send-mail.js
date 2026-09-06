@@ -1,3 +1,5 @@
+import { json } from "node:stream/consumers";
+
 export const sendBookingEmail = async ({
           email,
           userName,
@@ -39,3 +41,5 @@ export const sendBookingEmail = async ({
     console.error("❌ Email error:", error);
   }
 };
+
+

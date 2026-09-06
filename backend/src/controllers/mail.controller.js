@@ -14,7 +14,7 @@ export const sendBookingMail = async (req, res) => {
     } = req.body;
 
     const mailOptions = {
-      from: `"ShowBook" <${process.env.MAIL_USER}>`,
+      from: `"ShowBook" <${process.env.EMAIL_USER}>`,
       to: email,
       subject: "🎬 ShowBook - Booking Confirmed",
       html: `
@@ -376,7 +376,6 @@ export const sendBookingMail = async (req, res) => {
     const info = await transporter.sendMail(mailOptions);
 
     console.log("EMAIL SENT:", info.messageId);
-
     return res.status(200).json({
       success: true,
       message: "Booking email sent successfully",
@@ -390,4 +389,108 @@ export const sendBookingMail = async (req, res) => {
       error: error.message,
     });
   }
-};
+}
+
+export const sendRegisteredMail = async(req,res)=>{
+    try{
+      const{
+        email,
+        userName,
+      } = req.body
+      const mailOptions = {
+        from: `"ShowBook" <${process.env.EMAIL_USER}>`,
+        to: email,
+        subject: "Welcome to Showbook 🍿",
+       
+        html: `
+        <div style="margin:0; padding:0; background:#0b0c0f; font-family:Arial,Helvetica,sans-serif; color:#ffffff;">
+          <div style="max-width:600px; margin:0 auto; padding:40px 20px;">
+
+            <div style="background:#111318; border:1px solid #252831; border-radius:16px; overflow:hidden;">
+
+              <div style="padding:30px 25px; text-align:center; background:linear-gradient(135deg,#171923,#0f1015);">
+                <h1 style="margin:0; font-size:32px; color:#ffffff;">
+                  🍿 ShowBook
+                </h1>
+
+                <p style="margin:10px 0 0; color:#9ca3af; font-size:14px;">
+                  Your movie experience starts here
+                </p>
+              </div>
+
+              <div style="padding:35px 30px;">
+
+                <h2 style="margin:0 0 18px; color:#ffffff; font-size:24px;">
+                  Welcome, ${userName}! 🎉
+                </h2>
+
+                <p style="margin:0 0 18px; color:#d1d5db; font-size:15px; line-height:1.7;">
+                  Your ShowBook account has been successfully created.
+                  We're excited to have you with us!
+                </p>
+
+                <div style="background:#181a21; border-radius:12px; padding:20px; margin:25px 0;">
+                  <p style="margin:0 0 10px; color:#9ca3af; font-size:13px;">
+                    REGISTERED EMAIL
+                  </p>
+
+                  <p style="margin:0; color:#ffffff; font-size:15px; font-weight:bold;">
+                    ${email}
+                  </p>
+                </div>
+
+                <p style="margin:0 0 25px; color:#d1d5db; font-size:15px; line-height:1.7;">
+                  Discover movies, explore theatres, choose your favorite seats,
+                  and book your next movie experience with ease. 🎬
+                </p>
+
+                <div style="text-align:center; margin:30px 0;">
+                  <a
+                    href="${process.env.FRONTEND_URL || '#'}"
+                    style="display:inline-block; padding:14px 28px; background:#ffffff; color:#0b0c0f; text-decoration:none; border-radius:10px; font-size:15px; font-weight:bold;"
+                  >
+                    Explore ShowBook 🎬
+                  </a>
+                </div>
+
+                <p style="margin:30px 0 0; color:#9ca3af; font-size:13px; line-height:1.6;">
+                  Thanks for joining ShowBook. We hope you have an amazing
+                  movie experience! 🍿
+                </p>
+
+              </div>
+
+              <div style="padding:20px 25px; border-top:1px solid #252831; text-align:center;">
+                <p style="margin:0; color:#6b7280; font-size:12px;">
+                  © ${new Date().getFullYear()} ShowBook. All rights reserved.
+                </p>
+
+                <p style="margin:8px 0 0; color:#4b5563; font-size:11px;">
+                  This is an automated email. Please do not reply.
+                </p>
+              </div>
+
+            </div>
+
+          </div>
+        </div>
+
+      `
+      }
+      const info = await transporter.sendMail(mailOptions)
+
+    console.log("EMAIL SENT:", info.messageId);
+    return res.status(200).json({
+      success: true,
+      message: "Registered email sent successfully",
+    });
+  } catch (error) {
+    console.error("MAIL ERROR:", error);
+
+    return res.status(500).json({
+      success: false,
+      message: "Failed to send email",
+      error: error.message,
+    });
+  }
+}
