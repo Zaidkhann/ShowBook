@@ -53,8 +53,6 @@ passport.use(
           location: "",
           role: "user",
         });
-        user = user.toObject();
-        user.isNewUser = true;
 
         return done(null, user);
       } catch (error) {

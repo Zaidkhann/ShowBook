@@ -1,21 +1,23 @@
 import { cookies } from "next/headers"
 
-export const getSession = async () => {
-  const cookieStore = await cookies()
+export async function getSession() {
+  try {
+    const cookieStore = await cookies()
 
-  const res = await fetch("http://localhost:5000/api/auth/me", {
-    headers: {
-      Cookie: cookieStore.toString(),
-    },
-    cache: "no-store",
-  })
+    const res = await fetch("http://localhost:5000/api/auth/me", {
+      headers: {
+        Cookie: cookieStore.toString(),
+      },
+      cache: "no-store",
+    })
 
-  console.log("ME STATUS:", res.status)
+    if (!res.ok) {
+      return null
+    }
 
-  if (!res.ok) {
-    console.log("ME RESPONSE:", await res.text())
+    return await res.json()
+  } catch (error) {
+    console.error("GET SESSION ERROR:", error)
     return null
   }
-
-  return await res.json()
 }

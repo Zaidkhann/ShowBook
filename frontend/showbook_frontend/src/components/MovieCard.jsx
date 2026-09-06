@@ -46,7 +46,7 @@ export default function MovieCard({ movie }) {
       <div className="p-4">
 
         <Link href={`/movies/${movie._id}`}>
-          <h2 className="truncate text-[17px] font-semibold text-white transition hover:text-zinc-300">
+          <h2 className="truncate text-[17px] font-semibold text-white transition capitalize hover:text-zinc-300">
             {movie.movieName}
           </h2>
         </Link>

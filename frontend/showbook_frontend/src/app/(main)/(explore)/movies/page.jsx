@@ -3,6 +3,7 @@ import {cookies} from "next/headers"
 import {redirect, unauthorized} from "next/navigation"
 
 export async function fetchMovies() {
+    try {
     
         const cookieStore = await cookies();
         const res = await fetch("http://localhost:5000/api/movie/get-movie", 
@@ -18,12 +19,12 @@ export async function fetchMovies() {
         if (!res.ok) {
             return {movies:[],unauthorized: res.status === 401};
         }
-    try {
+    
         const data = await res.json()
         return {movies: data.movies || [], unauthorized:false};
     } catch (err) {
         console.error("Error fetching movies:", err);
-        return [];
+        return { movies: [], unauthorized: false };
     };
 }
 
