@@ -1,5 +1,3 @@
-import { json } from "node:stream/consumers";
-
 export const sendBookingEmail = async ({
           email,
           userName,

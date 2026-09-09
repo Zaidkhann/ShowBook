@@ -18,7 +18,7 @@ export default function LoginPage() {
             Show Book
           </a>
         </div>
-        <div className="flex flex-1 items-center justify-center bg-[#12151A] border-1 border-[#23272F] rounded-xl">
+        <div className="flex flex-1 items-center justify-center bg-[#12151A] border border-[#23272F] rounded-xl">
           <div className="w-full max-w-xs ">
             <LoginForm />
           </div>

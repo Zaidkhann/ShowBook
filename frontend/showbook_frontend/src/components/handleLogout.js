@@ -1,4 +1,4 @@
-export const handleLogout = async(router:any)=>{
+const handleLogout = async(router)=>{
     try{
         const res = await fetch("http://localhost:5000/api/auth/logout",{
             method : "Post",
@@ -19,3 +19,4 @@ export const handleLogout = async(router:any)=>{
     }
 
 }
+export default handleLogout

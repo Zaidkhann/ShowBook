@@ -1,0 +1,37 @@
+services:
+  backend:
+    image: zaidkhann/backend-showbook:0.0.1.RELEASE
+    ports:
+      - 5000:5000
+    env_file:
+      - ./backend/.env
+    build:
+      context: ./backend
+    container_name: showbook-backend
+    networks:
+      - showbook_net
+    restart: unless-stopped
+    
+  frontend:
+    image: zaidkhann/frontend-showbook:0.0.1.RELEASE
+    ports:
+      - 3000:3000
+    env_file:
+      - ./frontend/showbook_frontend/.env
+    build:
+      context: ./frontend/showbook_frontend
+    container_name: showbook-frontend
+    networks:
+      - showbook_net
+    restart: unless-stopped
+    depends_on:
+      - backend
+
+
+
+networks:
+  showbook_net:
+    driver: bridge
+
+
+

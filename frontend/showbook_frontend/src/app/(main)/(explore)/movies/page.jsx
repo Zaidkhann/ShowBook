@@ -1,12 +1,11 @@
-import MovieCard from "../../../../components/MovieCard";
 import {cookies} from "next/headers"
+import MovieCard from "../../../../components/MovieCard";
 import {redirect, unauthorized} from "next/navigation"
-
 export async function fetchMovies() {
     try {
     
         const cookieStore = await cookies();
-        const res = await fetch("http://localhost:5000/api/movie/get-movie", 
+        const res = await fetch(`${process.env.BACKEND_INTERNAL_URL}/api/movie/get-movie`, 
              {
                 method: "GET",
                 cache: "no-store",
