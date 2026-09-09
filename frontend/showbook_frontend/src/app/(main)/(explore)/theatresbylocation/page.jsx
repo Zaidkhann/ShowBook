@@ -5,7 +5,7 @@ async function getTheatresByLocation() {
     try {
         const cookieStore = await cookies();
 
-        const res = await fetch("http://localhost:5000/api/theatre/get-theaters", {
+        const res = await fetch(`${process.env.BACKEND_INTERNAL_URL}/api/theatre/get-theaters`, {
             headers: {
                 "Content-Type": "application/json",
                 Cookie: cookieStore.toString(),

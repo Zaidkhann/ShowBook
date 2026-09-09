@@ -4,7 +4,7 @@ export async function getSession() {
   try {
     const cookieStore = await cookies()
 
-    const res = await fetch("http://localhost:5000/api/auth/me", {
+    const res = await fetch(`${process.env.BACKEND_INTERNAL_URL}/api/auth/me`, {
       headers: {
         Cookie: cookieStore.toString(),
       },
